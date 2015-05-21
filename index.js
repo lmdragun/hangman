@@ -7,11 +7,11 @@ var io = require('socket.io')(http);
 
 mongoose.connect("mongodb://localhost/hangman");
 var db = mongoose.connection;
-var game = mongoose.model("Game", new mongoose.Schema({
+var Game = mongoose.model("Game", new mongoose.Schema({
   word: String,
-  Guesses: {right:[], wrong:[]},
-  Man: [],
-	Status: Boolean
+  guesses: {right:[], wrong:[]},
+  man: [],
+	status: Boolean
 	})
 );
 
@@ -21,8 +21,26 @@ app.get('/', function(req, res){
   res.render("index");
 });
 
+// io.on('connection', function(socket){
+//   socket.on('chat message', function(msg){
+//     console.log('message: ' + msg);
+//   });
+// });
+
 io.on('connection', function(socket){
-  console.log('a user connected');
+  socket.on('chat message', function(msg){
+		console.log(msg);
+		Game.update({word: msg}, function(doc){
+			// if (err) return handleError(err);
+    	io.emit('chat message', msg);
+		});
+  });
+});
+
+socket.on("reset", function(){
+	Game.collection.remove();
+		new Game({word: "", "guesses.right": [], "guesses.wrong": [], man: [], status: false}).save();
+	io.emit("reset");
 });
 
 http.listen(3000, function(){
