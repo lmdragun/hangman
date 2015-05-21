@@ -28,6 +28,7 @@ app.get('/', function(req, res){
 // });
 
 io.on('connection', function(socket){
+
   socket.on('chat message', function(msg){
 		console.log(msg);
 		Game.update({word: msg}, function(doc){
@@ -35,13 +36,16 @@ io.on('connection', function(socket){
     	io.emit('chat message', msg);
 		});
   });
+
+	socket.on('reset', function(){
+		Game.collection.remove();
+			new Game({word: "", "guesses.right": [], "guesses.wrong": [], man: [], status: false}).save();
+		io.emit('reset');
+	});
+
 });
 
-socket.on("reset", function(){
-	Game.collection.remove();
-		new Game({word: "", "guesses.right": [], "guesses.wrong": [], man: [], status: false}).save();
-	io.emit("reset");
-});
+
 
 http.listen(3000, function(){
   console.log("Listening on port 3000");
