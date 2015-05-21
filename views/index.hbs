@@ -30,8 +30,9 @@
 		socket.emit('restart');
 	})
 
-		socket.on("restart", function(){
-			$('#word').append($('<p>').text(msg));
+	socket.on("restart", function(){
+		$('#word').append($('<p>').text(""));
+
 		});
 	</script>
 </body>

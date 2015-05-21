@@ -15,6 +15,13 @@ var Game = mongoose.model("Game", new mongoose.Schema({
 	})
 );
 
+// var test = new Game({
+//   word: 'Test'
+// });
+// test.save(function(err, test) {
+//   if (err) return console.error(err);
+//   console.dir(test.word);
+// });
 app.set("view engine", "hbs");
 
 app.get('/', function(req, res){
@@ -39,8 +46,15 @@ io.on('connection', function(socket){
 
 	socket.on('reset', function(){
 		Game.collection.remove();
-			new Game({word: "", "guesses.right": [], "guesses.wrong": [], man: [], status: false}).save();
-		io.emit('reset');
+		console.log("removed collections");
+		var test = new Game({
+		  word: 'New Game'
+		});
+		test.save(function(err, test) {
+		  if (err) return console.error(err);
+		  console.dir(test.word);
+			io.emit('restart');
+		});
 	});
 
 });
