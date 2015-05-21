@@ -1,0 +1,14 @@
+.letterBoxes {
+
+}
+
+.letterBox {
+	margin: 2px;
+	padding: 5px;
+	border: solid 2px;
+}
+
+p .letter {
+	display: none;
+	font-size: 18px;
+}
