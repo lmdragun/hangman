@@ -5,26 +5,15 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var io = require('socket.io')(http);
 
-
-var db = mongoose.connection;
-db.on('error', console.error);
-
 mongoose.connect("mongodb://localhost/hangman");
+var db = mongoose.connection;
 var Game = mongoose.model("Game", new mongoose.Schema({
   word: String,
-  // guesses: {right:[], wrong:[]},
-  // man: [],
-	// status: Boolean
+  guesses: {right:[], wrong:[]},
+  man: [],
+	status: Boolean
 	})
 );
-
-var test = new Game({
-  word: 'Test'
-});
-test.save(function(err, test) {
-  if (err) return console.error(err);
-  console.dir(test.word);
-});
 
 app.set("view engine", "hbs");
 
@@ -48,24 +37,13 @@ io.on('connection', function(socket){
 		});
   });
 
-	socket.on('restart', function(){
-
+	socket.on('reset', function(){
 		Game.collection.remove();
-		console.log("removed collections");
-		var test = new Game({
-		  word: 'Test'
-		});
-		test.save(function(err, test) {
-		  if (err) return console.error(err);
-		  console.dir(test.word);
-			io.emit('restart');
-		});
-
+			new Game({word: "", "guesses.right": [], "guesses.wrong": [], man: [], status: false}).save();
+		io.emit('reset');
 	});
 
 });
-
-
 
 http.listen(3000, function(){
   console.log("Listening on port 3000");
