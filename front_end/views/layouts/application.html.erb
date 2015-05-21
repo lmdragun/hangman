@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hangman</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body>
+    <header>
+      <%= image_tag('http://eslgamesbox.com/wp-content/uploads/2013/03/hangman.gif', class: "logo") %>
+      <h1>Play Hangman!</h1>
+    </header>
+
+    word input
+    submit button
+
+    <div id="letterBoxes">
+    </div>
+
+    letter guess box
+    submit button
+
+    wrong guesses container
+
+    hangman pixelart container
+
+  </body>
+</html>
