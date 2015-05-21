@@ -18,13 +18,13 @@ var Game = mongoose.model("Game", new mongoose.Schema({
 	})
 );
 
-var test = new Game({
-  word: 'Test'
-});
-test.save(function(err, test) {
-  if (err) return console.error(err);
-  console.dir(test.word);
-});
+// var test = new Game({
+//   word: 'Test'
+// });
+// test.save(function(err, test) {
+//   if (err) return console.error(err);
+//   console.dir(test.word);
+// });
 
 app.set("view engine", "hbs");
 
@@ -53,7 +53,7 @@ io.on('connection', function(socket){
 		Game.collection.remove();
 		console.log("removed collections");
 		var test = new Game({
-		  word: 'Test'
+		  word: 'New Game'
 		});
 		test.save(function(err, test) {
 		  if (err) return console.error(err);
