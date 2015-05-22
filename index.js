@@ -44,14 +44,14 @@ io.on('connection', function(socket){
 		});
   });
 
-	socket.on('reset', function(){
+	socket.on('restart', function(){
 		Game.collection.remove();
 		console.log("removed collections");
 		var test = new Game({
 		  word: 'New Game'
 		});
 		test.save(function(err, test) {
-		  if (err) return console.error(err);
+		  // if (err) return console.error(err);
 		  console.dir(test.word);
 			io.emit('restart');
 		});

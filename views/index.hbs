@@ -26,12 +26,13 @@
   socket.on('new word', function(msg){
     $('#word').append($('<p>').text(msg));
   });
-	$('restart').submit(function(){
+	$('#restart').on("click", function(){
 		socket.emit('restart');
+		console.log("restart")
 	})
 
 	socket.on("restart", function(){
-		$('#word').append($('<p>').text(""));
+		$('#word').empty();
 
 		});
 	</script>
