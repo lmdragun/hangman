@@ -15,24 +15,11 @@ var Game = mongoose.model("Game", new mongoose.Schema({
 	})
 );
 
-// var test = new Game({
-//   word: 'Test'
-// });
-// test.save(function(err, test) {
-//   if (err) return console.error(err);
-//   console.dir(test.word);
-// });
 app.set("view engine", "hbs");
 
 app.get('/', function(req, res){
   res.render("index");
 });
-
-// io.on('connection', function(socket){
-//   socket.on('chat message', function(msg){
-//     console.log('message: ' + msg);
-//   });
-// });
 
 io.on('connection', function(socket){
 
@@ -40,9 +27,33 @@ io.on('connection', function(socket){
 		console.log(msg);
 		Game.update({word: msg}, function(doc){
 			// if (err) return handleError(err);
-    	io.emit('new word', msg);
+			var array = msg.split('');
+    	io.emit('new word', array);
 		});
   });
+
+	socket.on('guess', function(letter){
+		console.log(letter);
+		Game.find({}, "-_id word", function(err, word){
+			if (err) return handleError(err);
+			console.log(word);
+		})
+
+	});
+			// Game.update({"guesses.right": letter}, function(doc){
+			// 	io.emit(word, "found it" );
+			// });
+		// if ( word.indexOf(letter) > -1 ) {
+		// 	Game.update({"guesses.right": letter}, function(doc){
+		// 		io.emit('guess', "found it" );
+		// 	});
+		// } else {
+		// 	Game.update({"guesses.right": letter}, function(doc){
+		// 		io.emit('guess', "not found");
+		// 	});
+		// }
+
+
 
 	socket.on('restart', function(){
 		Game.collection.remove();

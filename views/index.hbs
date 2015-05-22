@@ -11,14 +11,17 @@
 </head>
 <body>
 <div id="word"></div>
-<form action="">
+<form action="" id="input-word">
 	<input id="w" autocomplete="off" /><button>Send</button>
 </form>
 <button id="restart">Restart</button>
+<form action="" id="input-letter">
+	<input id="l" autocomplete="off" /><button>Guess</button>
+</form>
 
 	<script>
 	var socket = io();
-  $('form').submit(function(){
+  $('#input-word').submit(function(){
     socket.emit('new word', $('#w').val());
     $('#w').val('');
     return false;
@@ -33,8 +36,15 @@
 
 	socket.on("restart", function(){
 		$('#word').empty();
-
-		});
+	});
+	$('#input-letter').submit(function(){
+		socket.emit('guess', $('#l').val());
+		$('#l').val('');
+		return false;
+	});
+	socket.on('guess', function(msg){
+		$('#word').append($('<p>').text(msg));
+	});
 	</script>
 </body>
 </html>
